@@ -6,16 +6,33 @@ import (
 	"strings"
 )
 
+// type ResultQuery is contain Query of type interface{}
+// if you pass the object({}) to it, it will return interface{}
+// if you pass the array([]) to it, it will return interface{} of type []interface{}
 type ResultQuery struct {
 	Query interface{}
 }
 
+// type Params is type []interface{} is used to pass the query params
 type Params []interface{}
+
+// type Query us contain Query of type string and Params of type Params
+// Query of string
+// 	Query string pass the {} or [] in string format with ~number
+//  Params is []interface{}
+// 	Usees :
+//	int 10
+//  float 12.34
+//  boolean false,true
+//  string use `"string"` in it
+//  object pass json stringified json
+//  array pass json stringigied array
 type Query struct {
 	Query  string
 	Params Params
 }
 
+// param converter is used to take []interface value from Param in Query and convert it to string for processing
 func paramsConverter(params []interface{}) []interface{} {
 	paramlength := len(params)
 	convert := make([]interface{}, paramlength)
@@ -26,6 +43,7 @@ func paramsConverter(params []interface{}) []interface{} {
 	return convert
 }
 
+// bindParamsWithQuery takes query and params and bind ~number with query
 func bindParamsWithQuery(query string, params []interface{}) (string, error) {
 	length := len(params)
 	for i := 0; i < length; i++ {
